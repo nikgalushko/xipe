@@ -3,7 +3,9 @@ package xipe
 import (
 	"go/ast"
 	"go/parser"
+	"go/printer"
 	"go/token"
+	"io"
 
 	"golang.org/x/tools/go/ast/astutil"
 )
@@ -69,4 +71,18 @@ func (x Xipe) GetAllTypeSpecs() map[string]*ast.TypeSpec {
 	})
 
 	return ret
+}
+
+func (x Xipe) AddImports(imports ...string) {
+	for _, s := range imports {
+		astutil.AddImport(x.fset, x.file, s)
+	}
+}
+
+func (x Xipe) AddDecls(dscls ...ast.Decl) {
+	x.file.Decls = append(x.file.Decls, dscls...)
+}
+
+func (x Xipe) Write(w io.Writer) error {
+	return printer.Fprint(w, x.fset, x.file)
 }
