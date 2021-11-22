@@ -17,9 +17,12 @@ var (
 )
 
 func ToStmts(s string) ([]ast.Stmt, error) {
+	return ToStmtsWithFileSet(s, token.NewFileSet())
+}
+
+func ToStmtsWithFileSet(s string, fset *token.FileSet) ([]ast.Stmt, error) {
 	s = "package p\nfunc f(){\n" + s + "\n}"
 
-	fset := token.NewFileSet()
 	f, err := parser.ParseFile(fset, "", s, 0)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %s", ErrIncorrectStmts, err.Error())
