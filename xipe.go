@@ -11,8 +11,8 @@ import (
 )
 
 type Xipe struct {
-	fset *token.FileSet
-	file *ast.File
+	FileSet *token.FileSet
+	file    *ast.File
 }
 
 func New(path string) (Xipe, error) {
@@ -22,7 +22,7 @@ func New(path string) (Xipe, error) {
 		return Xipe{}, err
 	}
 
-	return Xipe{fset: fset, file: file}, nil
+	return Xipe{FileSet: fset, file: file}, nil
 }
 
 func (x Xipe) FindStructType(name string) (StructType, bool) {
@@ -75,7 +75,7 @@ func (x Xipe) GetAllTypeSpecs() map[string]*ast.TypeSpec {
 
 func (x Xipe) AddImports(imports ...string) {
 	for _, s := range imports {
-		astutil.AddImport(x.fset, x.file, s)
+		astutil.AddImport(x.FileSet, x.file, s)
 	}
 }
 
@@ -84,5 +84,5 @@ func (x Xipe) AddDecls(dscls ...ast.Decl) {
 }
 
 func (x Xipe) Write(w io.Writer) error {
-	return printer.Fprint(w, x.fset, x.file)
+	return printer.Fprint(w, x.FileSet, x.file)
 }
