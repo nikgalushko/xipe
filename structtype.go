@@ -13,7 +13,7 @@ type Field struct {
 func (s StructType) AppendField(f Field) {
 	s.n.Fields.List = append(s.n.Fields.List, &ast.Field{
 		Names: []*ast.Ident{{Name: f.Name}},
-		Type:  &ast.Ident{Name: f.Name},
+		Type:  &ast.Ident{Name: f.Type},
 		Tag:   &ast.BasicLit{Value: f.Tag},
 	})
 }
