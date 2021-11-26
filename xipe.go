@@ -79,6 +79,17 @@ func (x Xipe) AddImports(imports ...string) {
 	}
 }
 
+type NamedImport struct {
+	Name    string
+	Package string
+}
+
+func (x Xipe) AddNamedImports(namedImports ...NamedImport) {
+	for _, s := range namedImports {
+		astutil.AddNamedImport(x.FileSet, x.file, s.Name, s.Package)
+	}
+}
+
 func (x Xipe) AddDecls(dscls ...ast.Decl) {
 	x.file.Decls = append(x.file.Decls, dscls...)
 }
