@@ -41,6 +41,22 @@ func (x Xipe) FindStructType(name string) (StructType, bool) {
 	return ret, found
 }
 
+func (x Xipe) FindInterface(name string) (Interface, bool) {
+	ret := Interface{}
+	found := false
+
+	astutil.Apply(x.file, nil, func(c *astutil.Cursor) bool {
+		if node, ok := c.Node().(*ast.TypeSpec); ok && node.Name.Name == name {
+			ret.n, found = node.Type.(*ast.InterfaceType)
+			return false
+		}
+
+		return true
+	})
+
+	return ret, found
+}
+
 func (x Xipe) FindFunc(name string) (Func, bool) {
 	ret := Func{}
 	found := false
