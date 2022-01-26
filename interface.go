@@ -27,6 +27,17 @@ func (i Interface) AppendMethod(name string, params []Field, results []Field) er
 		})
 	}
 
+	for _, p := range results {
+		expr, err := xstrings.ToExpr(p.Type)
+		if err != nil {
+			return err
+		}
+		function.Results.List = append(function.Results.List, &ast.Field{
+			Names: []*ast.Ident{{Name: p.Name}},
+			Type:  expr,
+		})
+	}
+
 	i.n.Methods.List = append(i.n.Methods.List, &ast.Field{
 		Names: []*ast.Ident{{Name: name}},
 		Type:  function,
