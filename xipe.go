@@ -57,6 +57,23 @@ func (x Xipe) FindInterface(name string) (Interface, bool) {
 	return ret, found
 }
 
+func (x Xipe) FindInterfaces() []Interface {
+	var ret []Interface
+
+	astutil.Apply(x.file, nil, func(c *astutil.Cursor) bool {
+		if node, ok := c.Node().(*ast.TypeSpec); ok {
+			n, ok := node.Type.(*ast.InterfaceType)
+			if ok {
+				ret = append(ret, Interface{n: n})
+			}
+		}
+
+		return true
+	})
+
+	return ret
+}
+
 func (x Xipe) FindFunc(name string) (Func, bool) {
 	ret := Func{}
 	found := false
