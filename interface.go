@@ -11,6 +11,11 @@ type Interface struct {
 }
 
 func (i Interface) AppendMethod(name string, params []Field, results []Field) error {
+	for _, m := range i.n.Methods.List {
+		if m.Names[0].Name == name {
+			return nil
+		}
+	}
 	function := &ast.FuncType{
 		Params:  &ast.FieldList{},
 		Results: &ast.FieldList{},
